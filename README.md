@@ -6,9 +6,9 @@ This example shows how to implement a basic app using:
 - [Prisma Client](https://prisma-client-py.readthedocs.io/en/stable/) as the ORM
 - A SQLite database file with some initial dummy data which you can find at [`./prisma/dev.db`](./prisma/dev.db)
 - [Bootstrap](https://getbootstrap.com/) for basic CSS Styling.
-<!-- - [Jest](https://jestjs.io/) and [Supertest](https://github.com/ladjs/supertest) for unit testing
-- [ESLint](https://eslint.org/) to statically analyze your code and find problems
-- [Prettier](https://prettier.io/) to format your code -->
+- [Pytest](https://docs.pytest.org/en/7.4.x/) for unit testing
+- [pylint](https://pypi.org/project/pylint/) to statically analyze your code and find problems
+- [black: The Uncompromising Code Formatter](https://pypi.org/project/black/) to format your code
 
 It is intended to serve as a starting point for your Team Software Project course if you choose to use ExpressJS. It
 provides examples for performing basic tasks with different types of endpoints (GET, POST, etc.)
@@ -38,6 +38,7 @@ prisma db push
 ```
 
 Seed the database by running the `./prisma/seed.py` file
+
 ```bash
 python3 seed.py
 ```
@@ -62,32 +63,18 @@ Once logged in, you can see that user's posts. Posts have Titles and Contents.
 
 ### Additional Commands
 
-**ESLint configuration is stored in the `.eslintrc.json` file.**
+**pylint configuration is stored in the `.pylintrc` file.**
 
-Check if the formatting matches Prettier’s rules by using:
+Check if the formatting matches pylint's rules by running
 
 ``` bash
-npm run format:check
+pylint app
 ```
 
-Apply the formatting recommendations using this command:
+Format your code with Black using this command:
 
 ``` bash
-npm run format:write
-```
-
-**Prettier configuration is stored in the `.prettierrc.json` file.**
-
-Lint your code with ESLint using this command:
-
-``` bash
-npm run lint:check
-```
-
-Auto-fixing errors with this command:
-
-``` bash
-npm run lint:fix
+black app
 ```
 
 Run unit tests with this command:
@@ -107,9 +94,7 @@ You can deploy this application to Render using the following steps:
    the option to "Configure account" on the right-hand side of the screen.  You can then select which repo you would
    like to link.
 5. Click on 'Connect' to the right of the correct repository.
-6. Choose a name and region of your choice.  Since you are using `npm` locally, I recommend using `npm` as the 'Build
-   Command'
-7. For the 'Start Command' enter `npm run dev`.
+6. Choose a name and region of your choice.  
+7. For the 'Start Command' enter `flask run`.
 8. Select the Free Plan option.
 9. Click 'Create Web Service'.
-    
