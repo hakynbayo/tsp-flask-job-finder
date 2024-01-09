@@ -25,6 +25,9 @@ Clone this repository:
 
 ```bash
 git clone git@github.com:kiboschool/tsp-flask-starter-template.git
+
+cd tsp-flask-starter-template
+
 ```
 
 Setup and activate your virtual environment:
@@ -36,7 +39,6 @@ Setup and activate your virtual environment:
 Install dependencies:
 
 ```bash
-cd tsp-flask-starter-template
 pip3 install -r requirements.txt
 ```
 
