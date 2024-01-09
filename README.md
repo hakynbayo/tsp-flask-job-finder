@@ -23,9 +23,16 @@ provides examples for performing basic tasks with different types of endpoints (
 
 Clone this repository:
 
+```bash
 git clone git@github.com:kiboschool/tsp-flask-starter-template.git
+```
 
-Install npm dependencies:
+Setup and activate your virtual environment:
+
+`python3 -m venv .venv`
+`. .venv/bin/activate`
+
+Install dependencies:
 
 ```bash
 cd tsp-flask-starter-template
@@ -44,7 +51,7 @@ prisma db push
 Seed the database by running the `./prisma/seed.py` file
 
 ```bash
-python3 seed.py
+python3 ./prisma/seed.py
 ```
 
 ### 3. Interacting with the Starter Template
