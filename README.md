@@ -34,7 +34,7 @@ Setup and activate your virtual environment:
 
 `python3 -m venv .venv`
 
-`. .venv/bin/activate`
+`source .venv/bin/activate`
 
 Install dependencies:
 
