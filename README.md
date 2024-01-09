@@ -15,6 +15,10 @@ provides examples for performing basic tasks with different types of endpoints (
 
 ## Getting started
 
+> Note: You may consider using pyenv to create a separate python environment that is configured specifically for this
+> app.  Please see the section below with the general steps for getting up and running with pyenv if you want to use
+> this path.
+
 ### 1. Download example and install dependencies
 
 Clone this repository:
@@ -98,3 +102,26 @@ You can deploy this application to Render using the following steps:
 7. For the 'Start Command' enter `flask run`.
 8. Select the Free Plan option.
 9. Click 'Create Web Service'.
+
+## Using pyenv
+
+1. **Install pyenv:** If you haven't already installed `pyenv`, you can do so by following the instructions on the [pyenv GitHub page](https://github.com/pyenv/pyenv#installation). 
+   
+2. **Install Python Version:** Use `pyenv` to install the specific version of Python that you want for your Flask application. For example:
+   ```bash
+   pyenv install 3.11.6
+   ```
+
+3. **Set the Local Python Version:** Navigate to your Flask application directory and set the local Python version to the one you installed. This ensures that your Flask application uses the correct Python version.
+   ```bash
+   cd path/to/your/flask/app
+   pyenv local 3.11.6
+   ```
+
+4. **Create a Virtual Environment (Optional):** While `pyenv` manages Python versions, it's still a good practice to use a virtual environment for your Flask application to manage dependencies. You can use `pyenv-virtualenv`, an extension for `pyenv`, to create a virtual environment. Install `pyenv-virtualenv` if you haven't, and then create a new environment:
+   ```bash
+   pyenv virtualenv 3.11.6 my-flask-env
+   pyenv local my-flask-env
+   ```
+
+Remember, every time you work on your Flask application, you should navigate to your application directory first. `pyenv` will automatically switch to the correct Python version as set by the `pyenv local` command.
