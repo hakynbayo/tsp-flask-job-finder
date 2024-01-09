@@ -30,6 +30,7 @@ git clone git@github.com:kiboschool/tsp-flask-starter-template.git
 Setup and activate your virtual environment:
 
 `python3 -m venv .venv`
+
 `. .venv/bin/activate`
 
 Install dependencies:
