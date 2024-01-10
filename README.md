@@ -63,17 +63,22 @@ python3 ./prisma/seed.py
 flask run
 ```
 
-The server is now running on `http://localhost:3000`. You can send the API requests implemented in `index.js`, e.g.
-[`http://localhost:3000/feed`](http://localhost:3000/feed).
+If you encounter this error:
+```
+Traceback (most recent call last):
+  File "/opt/homebrew/lib/python3.10/site-packages/flask/cli.py", line 219, in locate_app
+    __import__(module_name)
+  File "/Users/msaudi/kibo/tsp-flask-starter-template/app/__init__.py", line 3, in <module>
+    from flask_jwt_extended import JWTManager
+ModuleNotFoundError: No module named 'flask_jwt_extended'
+```
+It means your virtual environment uses a different python version than the one in the environment itself. To fix this, do the following steps:
 
-## Using the Starter Template
-
-- Visit `http://127.0.0.1:5000` to be presented with the login page.
-- If you have seeded the database per the above instructions, you can use one of the logins from `prisma/seed.js` to log
-  in.
-- Click on the `Register here` link to create a new user.
-
-Once logged in, you can see that user's posts. Posts have Titles and Contents.
+1. Open this file `.venv/bin/activate` using your favorite text editor
+2. Add this line to the end of the file `export PYTHONPATH="./.venv/bin/python3"`
+3. Save and close the file
+4. Source the file in the terminal using this command `source .venv/bin/activate`
+5. Run your flask project `flask run`
 
 ### Additional Commands
 
@@ -96,42 +101,3 @@ Run unit tests with this command:
 ```bash
 pytest tests
 ```
-
-### Deploying To Render
-
-You can deploy this application to Render using the following steps:
-
-1. Once you have pushed the remote to a GitHub repository, go to render.com and select 'Get Started For Free'.
-2. Log in using your GitHub account.
-3. Select the option to deploy a new Web Service
-4. Choose the option to 'Build and deploy from a Git repository'.  If you don't see your repository in the list, select
-   the option to "Configure account" on the right-hand side of the screen.  You can then select which repo you would
-   like to link.
-5. Click on 'Connect' to the right of the correct repository.
-6. Choose a name and region of your choice.  
-7. For the 'Start Command' enter `flask run`.
-8. Select the Free Plan option.
-9. Click 'Create Web Service'.
-
-## Using pyenv
-
-1. **Install pyenv:** If you haven't already installed `pyenv`, you can do so by following the instructions on the [pyenv GitHub page](https://github.com/pyenv/pyenv#installation). 
-   
-2. **Install Python Version:** Use `pyenv` to install the specific version of Python that you want for your Flask application. For example:
-   ```bash
-   pyenv install 3.11.6
-   ```
-
-3. **Set the Local Python Version:** Navigate to your Flask application directory and set the local Python version to the one you installed. This ensures that your Flask application uses the correct Python version.
-   ```bash
-   cd path/to/your/flask/app
-   pyenv local 3.11.6
-   ```
-
-4. **Create a Virtual Environment (Optional):** While `pyenv` manages Python versions, it's still a good practice to use a virtual environment for your Flask application to manage dependencies. You can use `pyenv-virtualenv`, an extension for `pyenv`, to create a virtual environment. Install `pyenv-virtualenv` if you haven't, and then create a new environment:
-   ```bash
-   pyenv virtualenv 3.11.6 my-flask-env
-   pyenv local my-flask-env
-   ```
-
-Remember, every time you work on your Flask application, you should navigate to your application directory first. `pyenv` will automatically switch to the correct Python version as set by the `pyenv local` command.
