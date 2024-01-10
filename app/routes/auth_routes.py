@@ -34,7 +34,7 @@ def login_post():
             "success"
         ] = f'Authenticated as {user.name} click to <a href="/logout">logout</a>.'
         token = create_access_token(identity={"user": {"id": user.id}})
-        resp = make_response(redirect(url_for("user.user_posts", id=user.id)))
+        resp = make_response(redirect(url_for("user.user_posts", author_id=user.id)))
         resp.set_cookie("access_token", token, httponly=True, max_age=60 * 60)
         return resp
     session["error"] = "Authentication failed, please check your email and password."

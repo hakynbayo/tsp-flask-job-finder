@@ -11,7 +11,7 @@ user_routes = Blueprint("user", __name__)
 @user_routes.route("/<int:author_id>/posts")
 def user_posts(author_id):
     """Show all posts from a user"""
-    if authorize(id, request.cookies.get("access_token")):
+    if authorize(author_id, request.cookies.get("access_token")):
         author = prisma.user.find_unique(where={"id": author_id})
         if author:
             posts = prisma.post.find_many(where={"authorId": author_id})
