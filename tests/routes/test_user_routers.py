@@ -43,7 +43,7 @@ class TestUserRoutes(TestCase):
 
         mock_prisma_user.find_unique.return_value = author
         mock_prisma_post.find_many.return_value = posts
-        response = self.client.get(url_for('user.user_posts', id=author.id))
+        response = self.client.get(url_for('user.user_posts', author_id=author.id))
         self.assertEqual(mock_authorize.call_count, 1)
         self.assertEqual(mock_prisma_post.find_many.call_count, 1)
         self.assertEqual(mock_prisma_user.find_unique.call_count, 1)
@@ -55,7 +55,7 @@ class TestUserRoutes(TestCase):
 
     @patch('app.routes.user_routes.authorize', return_value = False)
     def test_return_403_for_unauthorized_user(self, mock_authorize):
-        response = self.client.get(url_for('user.user_posts', id=author.id))
+        response = self.client.get(url_for('user.user_posts', author_id=author.id))
         self.assertEqual(mock_authorize.call_count, 1)
         self.assertEqual(response.status_code, 403)
 

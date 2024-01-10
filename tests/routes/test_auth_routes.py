@@ -34,7 +34,7 @@ class TestAuthRoutes(TestCase):
             'password': 'secret'
         })
         self.assertEqual(mock_prisma_user.find_unique.call_count, 1)
-        self.assertEqual(response.location, url_for('user.user_posts', id=1))
+        self.assertEqual(response.location, url_for('user.user_posts', author_id=1))
         self.assertEqual(response.status_code, 302)
 
     def test_login_failure_redirects(self):
