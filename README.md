@@ -80,21 +80,6 @@ It means your virtual environment uses a different python version than the one i
 4. Source the file in the terminal using this command `source .venv/bin/activate`
 5. Run your flask project `flask run`
 
-
-
-
-The server is now running on `http://localhost:3000`. You can send the API requests implemented in `index.js`, e.g.
-[`http://localhost:3000/feed`](http://localhost:3000/feed).
-
-## Using the Starter Template
-
-- Visit `http://127.0.0.1:5000` to be presented with the login page.
-- If you have seeded the database per the above instructions, you can use one of the logins from `prisma/seed.js` to log
-  in.
-- Click on the `Register here` link to create a new user.
-
-Once logged in, you can see that user's posts. Posts have Titles and Contents.
-
 ### Additional Commands
 
 **pylint configuration is stored in the `.pylintrc` file.**
