@@ -1,4 +1,3 @@
-import asyncio
 import bcrypt
 from prisma import Prisma
 
@@ -10,56 +9,55 @@ userData = [
         'name': 'Alice',
         'email': 'alice@prisma.io',
         'password': 'password123',
-        'posts': {
-            'create': [
-                {
-                    'title': 'Join the Prisma Slack',
-                    'content': 'https://slack.prisma.io',
-                },
-            ],
-        },
     },
     {
         'name': 'Nilu',
         'email': 'nilu@prisma.io',
         'password': 'qazwsx123',
-        'posts': {
-            'create': [
-                {
-                    'title': 'Follow Prisma on Twitter',
-                    'content': 'https://www.twitter.com/prisma',
-                },
-            ],
-        },
     },
     {
         'name': 'Mahmoud',
         'email': 'mahmoud@prisma.io',
         'password': 'password456',
-        'posts': {
-            'create': [
-                {
-                'title': 'Ask a question about Prisma on GitHub',
-                'content': 'https://www.github.com/prisma/prisma/discussions',
-                },
-                {
-                'title': 'Prisma on YouTube',
-                'content': 'https://pris.ly/youtube',
-                },
-            ],
-        },
     },
 ]
 
-def main():
-    print('Start seeding ...')
-    for u in userData:
-        hashed_password = bcrypt.hashpw(u['password'].encode('utf-8'), bcrypt.gensalt())
-        u['password'] = hashed_password.decode('utf-8')
-        user = client.user.create(data=u)
-        print(f'Created user with id: {user.id}')
-    print('Seeding finished.')
+def seed_jobs():
+    jobs_data = [
+        {
+            "title": "Software Engineer",
+            "description": "Developing and maintaining software applications.",
+            "responsibilities": "Write clean, maintainable code.",
+            "qualifications": "Bachelor's degree in Computer Science, etc.",
+            "employmentType": "Full Time",
+            "salaryRange": "N123 - N456",
+            "location": "San Francisco, CA",
+            "companyId": 1
+        },
+        {
+            "title": "Data Scientist",
+            "description": "Analyzing large datasets and deriving insights.",
+            "responsibilities": "Analyze data, build models.",
+            "qualifications": "Master's degree in Data Science, etc.",
+            "employmentType": "Part Time",
+            "salaryRange": "N789 - N1011",
+            "location": "New York, NY",
+            "companyId": 2
+        },
+        {
+            "title": "Marketing Manager",
+            "description": "Creating and executing marketing campaigns.",
+            "responsibilities": "Develop marketing strategies.",
+            "qualifications": "Bachelor's degree in Marketing, etc.",
+            "employmentType": "Full Time",
+            "salaryRange": "N1213 - N1415",
+            "location": "London, UK",
+            "companyId": 3
+        }
+    ]
 
-if __name__ == '__main__':
-    main()
-    client.disconnect()
+    for job_data in jobs_data:
+        prisma.job.create(**job_data)
+
+if __name__ == "__main__":
+    seed_jobs()
