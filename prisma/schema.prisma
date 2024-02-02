@@ -1,4 +1,4 @@
-generator client {
+generator client {d
   provider = "prisma-client-py"
   interface = "sync"
   recursive_type_depth = 5
@@ -40,3 +40,4 @@ model Company {
   logo      String?   // Path to the company logo image
   jobs      Job[]     @relation("CompanyJobs")    // Relationship with the Job model
 }
+

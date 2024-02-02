@@ -1,4 +1,5 @@
-import bcrypt
+
+import asyncio
 from prisma import Prisma
 
 client = Prisma()
@@ -22,7 +23,7 @@ userData = [
     },
 ]
 
-def seed_jobs():
+def seed_jobs(client):
     jobs_data = [
         {
             "title": "Software Engineer",
@@ -57,7 +58,29 @@ def seed_jobs():
     ]
 
     for job_data in jobs_data:
-        prisma.job.create(**job_data)
+        client.job.create(**job_data)
+        
+
+async def fetch_jobs():
+    jobs = await client.job.find_many()  # Fetches all jobs from the database
+    jobs_data = []
+
+    for job in jobs:  
+        job_data = {
+            "title": job.title,
+            "location": job.location,
+            "employmentType": job.employmentType,
+            "salaryRange": job.salaryRange,
+            "description": job.description,
+            "responsibilities": job.responsibilities,
+            "qualifications": job.qualifications,
+            "company": {
+                "id": job.company.id,
+            },
+        }
+        jobs_data.append(job_data)  
+
+    return jobs_data
 
 if __name__ == "__main__":
-    seed_jobs()
+    asyncio.run(seed_jobs(client))
