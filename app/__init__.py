@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 from .config import Config
 from .routes.auth_routes import auth_routes
 from .routes.user_routes import user_routes
-from .routes.post_routes import post_routes
+from .routes.job_routes import job_routes
 from .middlewares import setup_middlewares
 
 
@@ -23,5 +23,5 @@ def create_app(config_class=Config):
     # Registering blueprints from your routes modules
     app.register_blueprint(auth_routes)
     app.register_blueprint(user_routes, url_prefix="/user")
-    app.register_blueprint(post_routes, url_prefix="/post")
+    app.register_blueprint(job_routes, url_prefix="/job")
     return app
