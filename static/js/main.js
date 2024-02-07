@@ -92,9 +92,6 @@ const data = [
     { logo: 'static/img/com-logo-3.jpg', position: 'Product Designer', location: 'Lagos, Nigeria', employmentType: 'Full Time', salary: 'N123 - N456' },
     { logo: 'static/img/com-logo-4.jpg', position: 'WordPress Developer', location: 'Lagos, Nigeria', employmentType: 'Full Time', salary: 'N123 - N456' },
     { logo: 'static/img/com-logo-5.jpg', position: 'Product Designer', location: 'Lagos, Nigeria', employmentType: 'Full Time', salary: 'N123 - N456' },
-    { logo: 'static/img/com-logo-3.jpg', position: 'Product Designer', location: 'Lagos, Nigeria', employmentType: 'Full Time', salary: 'N123 - N456' },
-    { logo: 'static/img/com-logo-2.jpg', position: 'Marketing Manager', location: 'Lagos, Nigeria', employmentType: 'Full Time', salary: 'N123 - N456' },
-    { logo: 'static/img/com-logo-5.jpg', position: 'Product Designer', location: 'Lagos, Nigeria', employmentType: 'Full Time', salary: 'N123 - N456' },
 
 ];
 
