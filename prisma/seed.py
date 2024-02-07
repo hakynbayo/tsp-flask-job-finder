@@ -1,7 +1,7 @@
 import bcrypt
-from prisma import Prisma
+from prisma import Client
 
-client = Prisma()
+prisma = client()
 client.connect()
 
 userData = [
@@ -57,7 +57,8 @@ def seed_jobs():
     ]
 
     for job_data in jobs_data:
+        # Insert job data into the database using Prisma Client
         prisma.job.create(**job_data)
 
-if __name__ == "__main__":
-    seed_jobs()
+# Call the seed_jobs() function to populate the database
+seed_jobs()
