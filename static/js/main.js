@@ -81,9 +81,44 @@
         }
     });
 
- // Add event listener to accordion header for navigation
- $('#container').on('click', '.accordion-header', function () {
-    window.location.href = 'job-detail'; 
+//  // Add event listener to accordion header for navigation
+//  $('#container').on('click', '.accordion-header', function () {
+//     window.location.href = 'job-detail'; 
+// });
+
+
+//  // Add event listener to accordion header for navigation
+//  $('#container').on('click', '.accordion-header', function () {
+//     // Retrieve the job ID from the data attribute or another source
+//     const jobId = $(this).attr('data-job-id');
+//     window.location.href = `/app/job-detail/${jobId}`;
+// });
+// Function to handle "Apply Now" button click
+// function handleApplyNowClick(button) {
+//     const jobId = $(button).closest('.accordion-header').attr('data-job-id');
+//     window.location.href = `/app/job-detail/${jobId}`;
+// }
+
+// // Add event listener to "Apply Now" button for navigation
+// $('#container').on('click', '.btn-primary', function (event) {
+//     event.preventDefault();
+//     handleApplyNowClick(this);
+// });
+// Function to handle navigation based on job ID
+function handleNavigation(element) {
+    const jobId = $(element).closest('.accordion-header').attr('data-job-id');
+    window.location.href = `/app/job-detail/${jobId}`;
+}
+
+// Add event listener to accordion header for navigation
+$('#container').on('click', '.accordion-header', function () {
+    handleNavigation(this);
+});
+
+// Add event listener to "Apply Now" button for navigation
+$('#container').on('click', '.btn-primary', function (event) {
+    event.preventDefault();
+    handleNavigation(this);
 });
     
 })(jQuery);
@@ -97,12 +132,12 @@ function toggleAccordion(element) {
 
 
 // Function to generate the HTML structure for each data object
-function generateHTML(logo, title, location, employmentType, salaryRange) {
+function generateHTML(jobId, logo, title, location, employmentType, salaryRange) {
     return `
         <div class="tab-content">
             <div id="tab-1" class="tab-pane fade show p-0 active">
                 <div class="accordion">
-                    <div class="accordion-header" >
+                    <div class="accordion-header" data-job-id="${jobId}">
                         <div class="row g-4">
                             <div class="col-sm-12 col-md-8 d-flex align-items-center">
                                 <img class="flex-shrink-0 img-fluid border rounded" src="${logo}" alt="" style="width: 80px; height: 80px;">
@@ -122,8 +157,6 @@ function generateHTML(logo, title, location, employmentType, salaryRange) {
                             </div>
                         </div>
                     </div>
-
-                   
                 </div>
             </div>
         </div>
@@ -139,10 +172,16 @@ $.ajax({
     url: '/app/api/jobs', // Update the URL to match the correct endpoint
     method: 'GET',
     success: function (data) {
-        console.log(data); 
+        console.log(data);
+
+        // Clear existing content in the container
+        container.innerHTML = '';
+
         // Iterate through the job data and generate HTML
         data.forEach(job => {
-            const jobHtml = generateHTML(job.logo, job.title, job.location, job.employmentType, job.salary);
+            console.log(job);
+            console.log('Job ID:', job.id); 
+            const jobHtml = generateHTML(job.id, job.logo, job.title, job.location, job.employmentType, job.salary);
             container.innerHTML += jobHtml;
         });
     },
@@ -150,4 +189,5 @@ $.ajax({
         console.error('Error fetching job data:', error);
     }
 });
+
 

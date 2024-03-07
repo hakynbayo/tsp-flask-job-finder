@@ -82,7 +82,7 @@ def seed_jobs():
         "title": "Software Engineer",
         "location": "Lagos, Nigeria",
         "employmentType": "Full Time",
-        "salaryRange": "N123 - N456",
+        "salaryRange": "N500,000 - N550,000",
         "description": "We are seeking a skilled Software Engineer to join our dynamic team. In this role, you will be responsible for developing, testing, and maintaining high-quality software applications. If you are passionate about technology and enjoy working in a collaborative environment, we would love to hear from you!",
         "responsibilities": "\n".join([
             "Design and implement software solutions",
@@ -102,7 +102,7 @@ def seed_jobs():
         "title": "Cybersecurity Analyst",
         "location": "Lagos, Nigeria",
         "employmentType": "Full Time",
-        "salaryRange": "N140 - N480",
+        "salaryRange": "N500,000 - N700,000",
         "description": "Join our cybersecurity team as a Cybersecurity Analyst and play a crucial role in protecting our organization from cyber threats. As a Cybersecurity Analyst, you will assess security vulnerabilities, implement security measures, and respond to security incidents. If you have a strong understanding of cybersecurity principles and a commitment to keeping data secure, we welcome your expertise!",
         "responsibilities": "\n".join([
             "Conduct regular security assessments and risk analysis",
@@ -122,7 +122,7 @@ def seed_jobs():
         "title": "Marketing Manager",
         "location": "Lagos, Nigeria",
         "employmentType": "Full Time",
-        "salaryRange": "N123 - N456",
+        "salaryRange": "N150,000 - N250,000",
         "description": "We are looking for an experienced Marketing Manager to join our team. In this role, you will be responsible for developing and executing marketing strategies to drive business growth. If you have a creative mindset and a proven track record in marketing, we want to hear from you!",
         "responsibilities": "\n".join([
             "Develop and implement marketing plans and campaigns",
@@ -142,7 +142,7 @@ def seed_jobs():
         "title": "Data Scientist",
         "location": "Lagos, Nigeria",
         "employmentType": "Full Time",
-        "salaryRange": "N123 - N456",
+        "salaryRange": "N450,000 - N500,000",
         "description": "We are seeking an experienced Data Scientist to join our data analytics team. In this role, you will be responsible for analyzing complex datasets to extract valuable insights and support data-driven decision-making. If you have a strong background in data science and a passion for solving challenging problems, we want to hear from you!",
         "responsibilities": "\n".join([
             "Develop and implement machine learning models",
@@ -162,7 +162,7 @@ def seed_jobs():
         "title": "UX/UI Designer",
         "location": "Lagos, Nigeria",
         "employmentType": "Full Time",
-        "salaryRange": "N123 - N456",
+        "salaryRange": "N125,000 - N250,000",
         "description": "We are looking for a creative and detail-oriented UX/UI Designer to join our design team. In this role, you will be responsible for creating visually appealing and user-friendly interfaces. If you have a passion for design and a strong portfolio showcasing your work, we would love to hear from you!",
         "responsibilities": "\n".join([
             "Create wireframes, prototypes, and visual designs",
@@ -182,7 +182,7 @@ def seed_jobs():
         "title": "Network Engineer",
         "location": "Lagos, Nigeria",
         "employmentType": "Full Time",
-        "salaryRange": "N123 - N456",
+        "salaryRange": "N300,000 - N450,000",
         "description": "We are hiring a skilled Network Engineer to join our IT team. In this role, you will be responsible for designing, implementing, and managing our organization's network infrastructure. If you have a strong background in network administration and enjoy solving technical challenges, we want to hear from you!",
         "responsibilities": "\n".join([
             "Design and implement network solutions",
@@ -202,7 +202,7 @@ def seed_jobs():
         "title": "Frontend Developer",
         "location": "Lagos, Nigeria",
         "employmentType": "Full Time",
-        "salaryRange": "N123 - N456",
+        "salaryRange": "N250,000 - N455,000",
         "description": "We are seeking a talented Frontend Developer to join our development team. In this role, you will be responsible for implementing user interfaces and enhancing the overall user experience. If you have a passion for web development and a strong portfolio showcasing your skills, we'd love to hear from you!",
         "responsibilities": "\n".join([
             "Develop responsive and user-friendly web interfaces",
@@ -222,7 +222,7 @@ def seed_jobs():
         "title": "HR Manager",
         "location": "Lagos, Nigeria",
         "employmentType": "Full Time",
-        "salaryRange": "N123 - N456",
+        "salaryRange": "N200,000 - N450,000",
         "description": "We are looking for an experienced HR Manager to lead our human resources department. In this role, you will be responsible for recruiting, training, and managing the overall well-being of our employees. If you have a strong background in human resources and excellent interpersonal skills, we want to hear from you!",
         "responsibilities": "\n".join([
             "Lead the recruitment and onboarding processes",
@@ -250,3 +250,6 @@ seed_companies()
 
 # Call the seed_jobs() function to populate the database
 seed_jobs()
+
+# # Disconnect from the Prisma client after seeding
+# prisma.disconnect()
