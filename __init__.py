@@ -1,22 +1,33 @@
+import sys
+from pathlib import Path
+
+# Add the project root directory to the Python path
+sys.path.append(str(Path(__file__).parent))
+
+from app.config import Config  # Updated import path
+
 from flask import Flask, render_template
 from prisma import Client
 from job_routes import job_routes 
 
 app = Flask(__name__)
-prisma = Client()
+prisma = Config.PRISMA
 
-# Connect the Prisma client
-prisma.connect()
+# # Connect the Prisma client
+# prisma.connect()
+# Check if the Prisma client is not already connected before connecting
+if not prisma.is_connected():
+    # Connect the Prisma client
+    prisma.connect()
 
 # Register the job_routes blueprint
 app.register_blueprint(job_routes)
 
 @app.route("/")
 def home():
-    # Fetch job data from the database
-    jobs = prisma.job.find_many()
+    
     # Render HTML template and pass the job data
-    return render_template('index.html', jobs=jobs)
+    return render_template('index.html')
 
 @app.route('/about')
 def about():

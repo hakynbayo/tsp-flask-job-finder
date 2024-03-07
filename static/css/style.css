@@ -1,9 +1,10 @@
 /********** Template CSS **********/
 :root {
-    --primary: #00B074;
+    --primary: #3e2260ff;
     --secondary: #2B9BFF;
-    --light: #EFFDF5;
+    --light: #f8edffff;
     --dark: #2B3940;
+    
 }
 
 .back-to-top {
@@ -501,7 +502,7 @@ padding-right: 2rem;
 }
 
 .accordion-header {
-    background-color: #EFFDF5;
+    background-color: #f8edffff;
     padding: 25px;
     cursor: pointer;
 }
@@ -509,7 +510,7 @@ padding-right: 2rem;
 .accordion-content {
     padding: 10px;
     display: none;
-    background-color: #EFFDF5;
+    background-color: #f8edffff;
 
 }
 

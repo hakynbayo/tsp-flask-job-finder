@@ -7,6 +7,33 @@ prisma = Client()
 # Connect the Prisma client
 prisma.connect()
 
+@job_routes.route('/api/jobs', methods=['GET'])
+def get_jobs():
+    try:
+        # Fetch job data from the database using Prisma Client
+        jobs = prisma.job.find_many(include={'company': True})
+        print(f"Fetched {len(jobs)} jobs with company info")
+        print(jobs)
+        job_data = []
+
+        for job in jobs:
+            company = job.company
+            if company is not None:
+                job_data.append({
+                    'logo': company.logo if company.logo else '',  # Handle cases where company.logo is None
+                    'title': job.title,
+                    'location': job.location,
+                    'employmentType': job.employmentType,
+                    'salary': job.salaryRange,
+                })
+
+        return jsonify(job_data)
+
+    except Exception as e:
+        # Log the exception details
+        print(f"Error fetching job data: {str(e)}")
+        return jsonify({'error': 'Internal Server Error'}), 500
+
 
 @job_routes.route('/about')
 def about():
