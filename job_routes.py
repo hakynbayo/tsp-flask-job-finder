@@ -1,11 +1,15 @@
 from flask import Flask, Blueprint, redirect, url_for, jsonify, request, render_template
 from prisma import Client
+from flask_mail import Mail, Message
+from flask import current_app as app  # Import current_app
+
 
 job_routes = Blueprint ("job_routes", __name__, url_prefix="/app")
 prisma = Client()
 
 # Connect the Prisma client
 prisma.connect()
+
 
 @job_routes.route('/api/jobs', methods=['GET'])
 def get_jobs():
@@ -49,7 +53,7 @@ def job_detail(job_id):
             return render_template('job-detail.html', job=job)
         else:
             # Handle the case where the job with the specified ID is not found
-            return render_template('job-not-found.html')
+            return render_template('404.html')
 
     except Exception as e:
         # Log the exception details
@@ -59,7 +63,48 @@ def job_detail(job_id):
 # Register the route with the updated endpoint name
 job_routes.add_url_rule('/job-detail/<int:job_id>', 'job_detail', job_detail)
 
+# Function to send an email to the applicant
+def send_email(name, email, portfolio, cover_letter):
+    subject = "Job Application Submitted"
+    body = f"Dear {name},\n\nThank you for submitting your job application to our company. We have received your application and will review it shortly.\n\nBest regards,\nThe Hiring Team"
+    
+    # Access the mail instance from the app context
+    mail = Mail(app)
+    
+    
+    msg = Message(subject, recipients=[email], body=body)
 
+    try:
+        mail.send(msg)
+        app.logger.info(f'Email sent to {email} for job application')
+    except Exception as e:
+        app.logger.error(f'Error sending email to {email}: {str(e)}')
+        
+@job_routes.route('/form-submission', methods=['POST'])
+def handle_form_submission():
+  
+    try:
+        
+         # Log form data for debugging
+        app.logger.info(f'Form Data: {request.form}')
+        
+        # Extract data from the form submission
+        name = request.form.get('name')
+        email = request.form.get('email')
+        portfolio = request.form.get('portfolio')
+        cover_letter = request.form.get('cover-letter')
+        
+        
+        # Send an email to the applicant
+        send_email(name, email, portfolio, cover_letter)
+
+        # Return a JSON response (you can customize this based on your needs)
+        return jsonify({'status': 'success', 'message': 'Application submitted successfully'})
+
+    except Exception as e:
+        # Log the exception details
+        print(f"Error processing job application: {str(e)}")
+        return jsonify({'error': 'Internal Server Error'}), 500
 
 @job_routes.route('/about')
 def about():
@@ -77,6 +122,10 @@ def contact():
 @job_routes.route('/joblist')
 def joblist():
     return render_template('joblist.html')
+
+@job_routes.route('/error')
+def error():
+    return render_template('404.html')
 
 @job_routes.route("/")
 def home():
