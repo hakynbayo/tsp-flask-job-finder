@@ -252,4 +252,4 @@ seed_companies()
 seed_jobs()
 
 # # Disconnect from the Prisma client after seeding
-# prisma.disconnect()
+prisma.disconnect()

@@ -1,5 +1,8 @@
 from flask import Flask, Blueprint, redirect, url_for, jsonify, request, render_template
 from prisma import Client
+from flask_mail import Mail, Message
+from flask import current_app as app  # Import current_app
+
 
 job_routes = Blueprint("job_routes", __name__, url_prefix="/app")
 prisma = Client()
@@ -57,7 +60,7 @@ def job_detail(job_id):
             return render_template('job-detail.html', job=job)
         else:
             # Handle the case where the job with the specified ID is not found
-            return render_template('job-not-found.html')
+            return render_template('404.html')
 
     except Exception as e:
         # Log the exception details
@@ -67,39 +70,6 @@ def job_detail(job_id):
 
 # Register the route with the updated endpoint name
 job_routes.add_url_rule('/job-detail/<int:job_id>', 'job_detail', job_detail)
-
-
-@job_routes.route('/api/search')
-def search():
-    # Get the search query from the request URL
-    search_query = request.args.get('search')
-
-    try:
-        # Fetch job data from the database based on the search query
-        jobs = prisma.job.find_many(
-            where={'title': {'contains': search_query}})
-
-        # Prepare data for rendering in the HTML template
-        job_data = []
-        for job in jobs:
-            company = job.company
-            if company is not None:
-                job_data.append({
-                    'jobId': job.id,
-                    'logo': company.logo if company.logo else '',
-                    'title': job.title,
-                    'location': job.location,
-                    'employmentType': job.employmentType,
-                    'salaryRange': job.salaryRange
-                })
-
-        # Render the search results page with the search query and job data
-        return render_template('search.html', search_query=search_query, jobs=job_data)
-
-    except Exception as e:
-        # Log the exception details
-        print(f"Error fetching search results: {str(e)}")
-        return render_template('error.html'), 500
 
 
 @job_routes.route('/about')
