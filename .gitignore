@@ -73,6 +73,7 @@ Pipfile.lock
 # dotenv
 .env
 .env.*
+venv
 
 # IDEs
 .vscode
