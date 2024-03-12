@@ -1,6 +1,7 @@
 from job_routes import job_routes
 from prisma import Client
 from flask import Flask, render_template
+from flask_mail import Mail  # Import Mail from flask_mail
 from app.config import Config  # Updated import path
 import sys
 from pathlib import Path
