@@ -11,30 +11,65 @@ prisma = Client()
 prisma.connect()
 
 
+# @job_routes.route('/api/jobs', methods=['GET'])
+# def get_jobs():
+#     try:
+#         # Fetch job data from the database using Prisma Client
+#         jobs = prisma.job.find_many(include={'company': True})
+#         # print(f"Fetched {len(jobs)} jobs with company info")
+#         # print(jobs)
+#         job_data = []
+
+#         for job in jobs:
+#             company = job.company
+#             if company is not None:
+#                 job_data.append({
+#                     'id': job.id,
+#                     # Handle cases where company.logo is None
+#                     'logo': company.logo if company.logo else '',
+#                     'title': job.title,
+#                     'location': job.location,
+#                     'employmentType': job.employmentType,
+#                     'salary': job.salaryRange,
+#                     'description': job.description,
+#                     'responsibilities': job.responsibilities,
+#                     'qualifications': job.qualifications
+#                 })
+
+#         return jsonify(job_data)
+
+#     except Exception as e:
+#         # Log the exception details
+#         print(f"Error fetching job data: {str(e)}")
+#         return jsonify({'error': 'Internal Server Error'}), 500
 @job_routes.route('/api/jobs', methods=['GET'])
 def get_jobs():
     try:
+        # Get the search query from the request parameters
+        search_query = request.args.get('search', '')
+
         # Fetch job data from the database using Prisma Client
         jobs = prisma.job.find_many(include={'company': True})
-        # print(f"Fetched {len(jobs)} jobs with company info")
-        # print(jobs)
+
         job_data = []
 
         for job in jobs:
             company = job.company
             if company is not None:
-                job_data.append({
-                    'id': job.id,
-                    # Handle cases where company.logo is None
-                    'logo': company.logo if company.logo else '',
-                    'title': job.title,
-                    'location': job.location,
-                    'employmentType': job.employmentType,
-                    'salary': job.salaryRange,
-                    'description': job.description,
-                    'responsibilities': job.responsibilities,
-                    'qualifications': job.qualifications
-                })
+                # Check if the search query matches the job title
+                if search_query.lower() in job.title.lower():
+                    job_data.append({
+                        'id': job.id,
+                        # Handle cases where company.logo is None
+                        'logo': company.logo if company.logo else '',
+                        'title': job.title,
+                        'location': job.location,
+                        'employmentType': job.employmentType,
+                        'salary': job.salaryRange,
+                        'description': job.description,
+                        'responsibilities': job.responsibilities,
+                        'qualifications': job.qualifications
+                    })
 
         return jsonify(job_data)
 
@@ -42,7 +77,6 @@ def get_jobs():
         # Log the exception details
         print(f"Error fetching job data: {str(e)}")
         return jsonify({'error': 'Internal Server Error'}), 500
-
 
 @job_routes.route('/job-detail/<int:job_id>')
 def job_detail(job_id):
@@ -99,18 +133,6 @@ def handle_form_submission():
         email = request.form.get('email')
         portfolio = request.form.get('portfolio', '')
         cover_letter = request.form.get('cover-letter', '')
-        job_id = int(request.form.get('job_id'))
-
-        # Save applicant data to the database
-        applicant = prisma.applicant.create(
-            data={
-                'name': name,
-                'email': email,
-                'portfolio': portfolio,
-                'coverLetter': cover_letter,
-                'jobId': job_id
-            }
-        )
 
         # Send an email to the applicant
         send_email(name, email, portfolio, cover_letter)

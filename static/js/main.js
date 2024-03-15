@@ -98,12 +98,12 @@
   // });
   // Function to handle navigation based on job ID
   function handleNavigation(element) {
-    const jobId = $(element).closest(".accordion-header").attr("data-job-id");
+    const jobId = $(element).closest(".text-start").attr("data-job-id");
     window.location.href = `/app/job-detail/${jobId}`;
   }
 
   // Add event listener to accordion header for navigation
-  $("#container").on("click", ".accordion-header", function () {
+  $("#container").on("click", ".text-start", function () {
     handleNavigation(this);
   });
 
@@ -111,6 +111,11 @@
   $("#container").on("click", ".btn-primary", function (event) {
     event.preventDefault();
     handleNavigation(this);
+  });
+
+  // Add event listener to heart icon for changing color
+  $("#container").on("click", ".fa-heart", function () {
+    $(this).toggleClass("far fas"); // Toggle between regular and solid heart icons
   });
 })(jQuery);
 
@@ -132,11 +137,11 @@ function generateHTML(
       <div class="tab-content">
           <div id="tab-1" class="tab-pane fade show p-0 active">
               <div class="accordion">
-                  <div class="accordion-header" data-job-id="${jobId}">
+                  <div class="accordion-header" >
                       <div class="row g-4">
                           <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                              <img class="flex-shrink-0 img-fluid border rounded" src="${logo}" alt="" style="width: 80px; height: 80px;">
-                              <div class="text-start ps-4">
+                              
+                              <div class="text-start ps-4" data-job-id="${jobId}">
                                   <h5 class="mb-3">${title}</h5>
                                   <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>${location}</span>
                                   <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>${employmentType}</span>
@@ -145,7 +150,7 @@ function generateHTML(
                           </div>
                           <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                               <div class="d-flex mb-3">
-                                  <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
+                                  <div class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></div>
                                   <a class="btn btn-primary" href="job-detail">Apply Now</a>
                               </div>
                               <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: 01 Jan, 2045</small>
