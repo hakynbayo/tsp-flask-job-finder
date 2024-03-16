@@ -37,9 +37,7 @@ VERSION_RE = re.compile(r'v?(\d+)(?:\.?(\d+))')
 
 class UnknownTargetError(PrismaError):
     def __init__(self, *, target: str) -> None:
-        super().__init__(
-            f'Unknown target: {target}; Valid choices are: {", ".join(get_args(cast(type, Target)))}'
-        )
+        super().__init__(f'Unknown target: {target}; Valid choices are: {", ".join(get_args(cast(type, Target)))}')
 
 
 # TODO: add tests for this error
@@ -51,8 +49,6 @@ class MissingNodejsBinError(PrismaError):
 
 
 class Strategy(ABC):
-    resolver: Literal['nodejs-bin', 'global', 'nodeenv']
-
     # TODO: support more options
     def run(
         self,
@@ -184,7 +180,7 @@ class NodeBinaryStrategy(Strategy):
                     stderr=sys.stderr,
                 )
             except Exception as exc:
-                print(
+                print(  # noqa: T201
                     'nodeenv installation failed; You may want to try installing `nodejs-bin` as it is more reliable.',
                     file=sys.stderr,
                 )

@@ -73,10 +73,10 @@ __all__ = (
 
 log: logging.Logger = logging.getLogger(__name__)
 
-SCHEMA_PATH = Path('/Users/decagon/Desktop/Kibo_Assignments/tsp-flask-job-finder/prisma/schema.prisma')
+SCHEMA_PATH = Path('/Users/decagon/Documents/KIBO/tsp-flask-job-finder/prisma/schema.prisma')
 PACKAGED_SCHEMA_PATH = Path(__file__).parent.joinpath('schema.prisma')
 ENGINE_TYPE: EngineType = EngineType.binary
-BINARY_PATHS = model_parse(BinaryPaths, {'queryEngine': {'darwin': '/Users/decagon/Desktop/Kibo_Assignments/tsp-flask-job-finder/node_modules/prisma/query-engine-darwin'}, 'introspectionEngine': {}, 'migrationEngine': {}, 'libqueryEngine': {}, 'prismaFmt': {}})
+BINARY_PATHS = model_parse(BinaryPaths, {'queryEngine': {'darwin': '/Users/decagon/.cache/prisma-python/binaries/5.8.0/0a83d8541752d7582de2ebc1ece46519ce72a848/node_modules/prisma/query-engine-darwin'}, 'introspectionEngine': {}, 'migrationEngine': {}, 'libqueryEngine': {}, 'prismaFmt': {}})
 
 RegisteredClient = Union['Prisma', Callable[[], 'Prisma']]
 _registered_client: Optional[RegisteredClient] = None
@@ -297,9 +297,9 @@ class Prisma:
         if self.__engine is not None:
             engine = self.__engine
             self.__engine = None
-            if isinstance(timeout, float):
+            if isinstance(timeout, (int, float)):
                 message = (
-                    'Passing a float as `timeout` argument is deprecated '
+                    'Passing a number as `timeout` argument is deprecated '
                     'and will be removed in the next major release. '
                     'Use a `datetime.timedelta` instead.'
                 )

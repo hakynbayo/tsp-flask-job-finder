@@ -75,7 +75,7 @@ class _PrismaModel(BaseModel):
 
 
 class BaseUser(_PrismaModel):
-    __prisma_model__: ClassVar[Literal['User']] = 'User'
+    __prisma_model__: ClassVar[Literal['User']] = 'User'  # pyright: ignore[reportIncompatibleVariableOverride]
 
     @classmethod
     def prisma(cls: Type[_PrismaModelT], client: Optional['Prisma'] = None) -> 'actions.UserActions[_PrismaModelT]':
@@ -85,7 +85,7 @@ class BaseUser(_PrismaModel):
 
 
 class BaseJob(_PrismaModel):
-    __prisma_model__: ClassVar[Literal['Job']] = 'Job'
+    __prisma_model__: ClassVar[Literal['Job']] = 'Job'  # pyright: ignore[reportIncompatibleVariableOverride]
 
     @classmethod
     def prisma(cls: Type[_PrismaModelT], client: Optional['Prisma'] = None) -> 'actions.JobActions[_PrismaModelT]':
@@ -95,7 +95,7 @@ class BaseJob(_PrismaModel):
 
 
 class BaseCompany(_PrismaModel):
-    __prisma_model__: ClassVar[Literal['Company']] = 'Company'
+    __prisma_model__: ClassVar[Literal['Company']] = 'Company'  # pyright: ignore[reportIncompatibleVariableOverride]
 
     @classmethod
     def prisma(cls: Type[_PrismaModelT], client: Optional['Prisma'] = None) -> 'actions.CompanyActions[_PrismaModelT]':

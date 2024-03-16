@@ -38,6 +38,6 @@ from typing_extensions import TypedDict, Literal
 
 LiteralString = str
 # -- template enums.py.jinja --
-from enum import Enum
+from ._compat import StrEnum
 
 

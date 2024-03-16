@@ -68,12 +68,8 @@ class Manifest(BaseModel):
     prettyName: str = Field(alias='name')
     defaultOutput: Union[str, Path] = Field(alias='default_output')
     denylist: Optional[List[str]] = None
-    requiresEngines: Optional[List[EngineType]] = Field(
-        alias='requires_engines', default=None
-    )
-    requiresGenerators: Optional[List[str]] = Field(
-        alias='requires_generators', default=None
-    )
+    requiresEngines: Optional[List[EngineType]] = Field(alias='requires_engines', default=None)
+    requiresGenerators: Optional[List[str]] = Field(alias='requires_generators', default=None)
 
 
 # TODO: proper types
@@ -110,5 +106,5 @@ def parse(line: str) -> Request:
 
 def reply(response: Response) -> None:
     dumped = model_json(response) + '\n'
-    print(dumped, file=sys.stderr, flush=True)
+    print(dumped, file=sys.stderr, flush=True)  # noqa: T201
     log.debug('Replied with %s', dumped)

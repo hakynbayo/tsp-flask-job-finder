@@ -45,11 +45,10 @@ log: logging.Logger = logging.getLogger(__name__)
     multiple=True,
     help='Specifies which generator to use. Can be specified multiple times. By default, all generators will be ran',
 )
-def cli(
-    schema: Optional[Path], watch: bool, generator: Tuple[str], **kwargs: Any
-) -> None:
+def cli(schema: Optional[Path], watch: bool, generator: Tuple[str], **kwargs: Any) -> None:
     """Generate prisma artifacts with modified config options"""
-    if pydantic.VERSION.split('.') < ['1', '8']:
+    # context https://github.com/microsoft/pyright/issues/6099
+    if pydantic.VERSION.split('.') < ['1', '8']:  # pyright: ignore
         warning(
             'Unsupported version of pydantic installed, this command may not work as intended\n'
             'Please update pydantic to 1.8 or greater.\n'
@@ -72,9 +71,7 @@ def cli(
         if value is None:
             continue
 
-        env[prefix + ARG_TO_CONFIG_KEY.get(key, key).upper()] = serialize(
-            key, value
-        )
+        env[prefix + ARG_TO_CONFIG_KEY.get(key, key).upper()] = serialize(key, value)
 
     log.debug('Running generate with env: %s', env)
     sys.exit(prisma.run(args, env=env))

@@ -1,3 +1,5 @@
+# (we don't need to care about this check in this file)
+# pyright: reportIncompatibleVariableOverride=false
 from __future__ import annotations
 
 from pathlib import Path
@@ -24,13 +26,13 @@ class DefaultConfig(BaseSettings):
     #       doesn't change then the CLI is incorrectly cached
     prisma_version: str = Field(
         env='PRISMA_VERSION',
-        default='5.4.2',
+        default='5.8.0',
     )
 
     # Engine binary versions can be found under https://github.com/prisma/prisma-engine/commits/main
     expected_engine_version: str = Field(
         env='PRISMA_EXPECTED_ENGINE_VERSION',
-        default='ac9d7041ed77bcc8a8dbd2ab6616b39013829574',
+        default='0a83d8541752d7582de2ebc1ece46519ce72a848',
     )
 
     # Home directory, used to build the `binary_cache_dir` option by default, useful in multi-user
@@ -48,9 +50,7 @@ class DefaultConfig(BaseSettings):
     )
 
     # Workaround to support setting the binary platform until it can be properly implemented
-    binary_platform: Optional[str] = Field(
-        env='PRISMA_BINARY_PLATFORM', default=None
-    )
+    binary_platform: Optional[str] = Field(env='PRISMA_BINARY_PLATFORM', default=None)
 
     # Whether or not to use the global node installation (if available)
     use_global_node: bool = Field(env='PRISMA_USE_GLOBAL_NODE', default=True)
@@ -67,10 +67,7 @@ class DefaultConfig(BaseSettings):
     # Where to download nodeenv to, defaults to ~/.cache/prisma-python/nodeenv
     nodeenv_cache_dir: Path = Field(
         env='PRISMA_NODEENV_CACHE_DIR',
-        default_factory=lambda: Path.home()
-        / '.cache'
-        / 'prisma-python'
-        / 'nodeenv',
+        default_factory=lambda: Path.home() / '.cache' / 'prisma-python' / 'nodeenv',
     )
 
     if PYDANTIC_V2:
@@ -82,9 +79,7 @@ class DefaultConfig(BaseSettings):
                 extra: Extra = pydantic.Extra.ignore
 
                 @classmethod
-                def customise_sources(
-                    cls, init_settings, env_settings, file_secret_settings
-                ):
+                def customise_sources(cls, init_settings, env_settings, file_secret_settings):
                     # prioritise env settings over init settings
                     return env_settings, init_settings, file_secret_settings
 
@@ -112,11 +107,7 @@ class Config(DefaultConfig):
             path = Path('pyproject.toml')
 
         if path.exists():
-            config = (
-                tomlkit.loads(path.read_text())
-                .get('tool', {})
-                .get('prisma', {})
-            )
+            config = tomlkit.loads(path.read_text()).get('tool', {}).get('prisma', {})
         else:
             config = {}
 

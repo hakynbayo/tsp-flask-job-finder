@@ -121,7 +121,10 @@ else:
         BaseConfig = None
 
     else:
-        from pydantic import BaseSettings, BaseConfig
+        from pydantic import (
+            BaseSettings as BaseSettings,
+            BaseConfig as BaseConfig,
+        )
 
         BaseSettingsConfig = BaseSettings.Config
 
@@ -130,19 +133,19 @@ else:
 if TYPE_CHECKING:
     from pydantic.v1 import Extra as Extra
 
-    def get_args(t: type[Any]) -> tuple[Any, ...]:
+    def get_args(t: type[Any]) -> tuple[Any, ...]:  # noqa: ARG001
         ...
 
-    def is_union(tp: type[Any] | None) -> bool:
+    def is_union(tp: type[Any] | None) -> bool:  # noqa: ARG001
         ...
 
-    def get_origin(t: type[Any]) -> type[Any] | None:
+    def get_origin(t: type[Any]) -> type[Any] | None:  # noqa: ARG001
         ...
 
-    def is_literal_type(type_: type[Any]) -> bool:
+    def is_literal_type(type_: type[Any]) -> bool:  # noqa: ARG001
         ...
 
-    def is_typeddict(type_: type[Any]) -> bool:
+    def is_typeddict(type_: type[Any]) -> bool:  # noqa: ARG001
         ...
 
 else:
@@ -176,9 +179,7 @@ ENV_VAR_KEY = '$env'
 
 
 # minimal re-implementation of BaseSettings for v2
-def _env_var_resolver(
-    model_cls: type[BaseModel], values: Any
-) -> dict[str, Any]:
+def _env_var_resolver(model_cls: type[BaseModel], values: Any) -> dict[str, Any]:
     assert isinstance(values, dict)
 
     for key, field_info in model_cls.model_fields.items():
@@ -206,11 +207,13 @@ def _get_field_env_var(field: FieldInfo, name: str) -> str | None:
         return None
 
     if callable(extra):
-        raise RuntimeError(
-            f'Unexpected json schema for field "{name}" is a function'
-        )
+        raise RuntimeError(f'Unexpected json schema for field "{name}" is a function')
 
-    return extra.get(ENV_VAR_KEY)
+    env = extra.get(ENV_VAR_KEY)
+    if env and isinstance(env, str):
+        return env
+
+    return None
 
 
 def is_field_required(field: FieldInfo) -> bool:
@@ -306,7 +309,7 @@ def Field(*, env: str | None = None, **extra: Any) -> Any:
         if env:
             json_schema_extra = {ENV_VAR_KEY: env}
 
-        return pydantic.Field(**extra, json_schema_extra=json_schema_extra)  # type: ignore[pydantic-field]
+        return pydantic.Field(**extra, json_schema_extra=json_schema_extra)  # type: ignore
 
     return pydantic.Field(**extra, env=env)  # type: ignore
 
@@ -331,6 +334,17 @@ else:
         import nodejs
     except ImportError:
         nodejs = None
+
+
+if TYPE_CHECKING:
+    from enum import Enum
+
+    StrEnum = Enum
+else:
+    try:
+        from enum import StrEnum as StrEnum
+    except ImportError:
+        from strenum import StrEnum as StrEnum
 
 
 def removeprefix(string: str, prefix: str) -> str:
