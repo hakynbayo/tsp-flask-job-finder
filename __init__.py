@@ -1,4 +1,4 @@
-from job_routes import job_routes
+from job_routs import job_routes
 from prisma import Client
 from flask import Flask, render_template
 from app.config import Config  # Updated import path
