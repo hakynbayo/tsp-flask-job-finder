@@ -6,6 +6,7 @@ datasource db {
 generator py {
   provider             = "prisma-client-py"
   recursive_type_depth = 5
+    interface            = "sync"
 }
 
 model User {
