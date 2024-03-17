@@ -1,12 +1,9 @@
 from job_routes import job_routes
-from prisma.client import Prisma
 from prisma import Client
 from flask import Flask, render_template
-from flask_mail import Mail  # Import Mail from flask_mail
 from app.config import Config  # Updated import path
 import sys
 from pathlib import Path
-
 
 # Add the project root directory to the Python path
 sys.path.append(str(Path(__file__).parent))
@@ -15,13 +12,8 @@ sys.path.append(str(Path(__file__).parent))
 app = Flask(__name__)
 prisma = Config.PRISMA
 
-# Configure Flask app with email settings
-app.config.from_object(Config)
-
-# Initialize Flask-Mail
-mail = Mail(app)
-
-
+# # Connect the Prisma client
+# prisma.connect()
 # Check if the Prisma client is not already connected before connecting
 if not prisma.is_connected():
     # Connect the Prisma client

@@ -1,83 +1,101 @@
-function submitSearch() {
-  // Prevent default form submission
-  event.preventDefault();
+// Function to generate HTML for each search result
+function generateSearchResultHTML(
+  jobId,
+  logo,
+  title,
+  location,
+  employmentType,
+  salaryRange
+) {
+  return `
+      <div class="search-result">
+          <img src="${logo}" alt="Company Logo" class="company-logo">
+          <div class="job-details">
+              <h3 class="job-title">${title}</h3>
+              <p class="location">${location}</p>
+              <p class="employment-type">${employmentType}</p>
+              <p class="salary">${salaryRange}</p>
+              <a href="/app/job-detail/${jobId}" class="btn btn-primary">View Details</a>
+          </div>
+      </div>
+  `;
+}
 
-  // Get the search query from the input field
-  const searchQuery = document.getElementById("searchInput").value;
+// Function to render search results into the search container
+function renderSearchResults(searchResults) {
+  const searchcontainer = document.getElementById("searchcontainer");
+  searchcontainer.innerHTML = ""; // Clear existing content
 
-  // Here, you can perform additional tasks with the search query before making the request (optional)
+  searchResults.forEach((result) => {
+    const resultHTML = generateSearchResultHTML(
+      result.id,
+      result.logo,
+      result.title,
+      result.location,
+      result.employmentType,
+      result.salaryRange
+    );
+    searchcontainer.innerHTML += resultHTML;
+  });
+}
 
-  // Make the API call using Fetch API (or any preferred method like Axios)
-  fetch("/app/api/jobs?search=" + searchQuery)
-    .then((response) => response.json())
-    .then((data) => {
-      // Process the received JSON data and update the search results section
-      updateSearchResults(data);
-    })
-    .catch((error) => {
-      console.error("Error fetching search results:", error);
-      // Handle errors appropriately, like displaying an error message
+// Assuming you have received search results data in a variable named 'searchResults'
+// Call the function to render search results into the search container
+renderSearchResults(searchResults);
+
+// Function to fetch job title suggestions from the server
+function fetchJobTitleSuggestions(searchTerm) {
+  $.ajax({
+    url: "/api/job-titles",
+    method: "GET",
+    data: { search: searchTerm },
+    success: function (data) {
+      displayJobTitleSuggestions(data);
+    },
+    error: function (error) {
+      console.error("Error fetching job title suggestions:", error);
+    },
+  });
+}
+
+// Function to display job title suggestions in the suggestions container
+function displayJobTitleSuggestions(suggestions) {
+  const suggestionsContainer = $("#suggestionsContainer");
+  suggestionsContainer.empty();
+
+  suggestions.forEach(function (suggestion) {
+    const suggestionElement = $(
+      '<div class="suggestion">' + suggestion.title + "</div>"
+    );
+    suggestionElement.on("click", function () {
+      $("#searchInput").val(suggestion.title);
+      suggestionsContainer.empty();
     });
+    suggestionsContainer.append(suggestionElement);
+  });
 }
 
-function updateSearchResults(data) {
-  // This function should update the HTML content of the searchcontainer div
-  // based on the received data (loop through jobs, create elements, etc.)
-  const searchContainer = document.getElementById("searchcontainer");
-  searchContainer.innerHTML = ""; // Clear the container before adding new results
-
-  // Check if any jobs were found
-  if (data.length === 0) {
-    searchContainer.innerHTML = `<p>No jobs found matching your search criteria.</p>`;
-    return;
+// Event listener for keyup event on the search input field
+$("#searchInput").on("keyup", function () {
+  const searchTerm = $(this).val().trim();
+  if (searchTerm.length >= 2) {
+    fetchJobTitleSuggestions(searchTerm);
+  } else {
+    $("#suggestionsContainer").empty();
   }
+});
 
-  // Update jobs variable with received data
-  const jobs = data;
-
-  // Use Jinja templating to render search results
-  function generateHTML(
-    jobId,
-    logo,
-    title,
-    location,
-    employmentType,
-    salaryRange
-  ) {
-    return `
-        <div class="tab-content">
-            <div id="tab-1" class="tab-pane fade show p-0 active">
-                <div class="accordion">
-                    <div class="accordion-header" >
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                
-                                <div class="text-start ps-4" data-job-id="${jobId}">
-                                    <h5 class="mb-3">${title}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>${location}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>${employmentType}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>${salaryRange}</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <div class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></div>
-                                    <a class="btn btn-primary" href="job-detail">Apply Now</a>
-                                </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: 01 Jan, 2045</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-  }
-
-  // Get the container element where the generated HTML will be added
-
-  searchContainer.innerHTML = template;
-}
-
-// Add event listener to the search button (assuming it has an ID)
-document.getElementById("searchButton").addEventListener("click", submitSearch);
+// AJAX request to fetch search results
+$.ajax({
+  url: "/app/api/jobs", // Update the URL to match the endpoint for fetching search results
+  method: "GET", // Set the method to GET since you're fetching data
+  data: { search: searchTerm }, // Include any search parameters if needed
+  success: function (data) {
+    console.log(data);
+    // Once you receive the search results data, you can render it into the search container
+    renderSearchResults(data);
+  },
+  error: function (error) {
+    console.error("Error fetching search results:", error);
+  },
+});

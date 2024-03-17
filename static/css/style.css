@@ -558,6 +558,3 @@ div#navbarCollapse {
 .accordion.active .accordion-content {
   display: block;
 }
-.red-background {
-  background-color: red !important;
-}
