@@ -8,6 +8,7 @@ from pathlib import Path
 # Add the project root directory to the Python path
 sys.path.append(str(Path(__file__).parent))
 
+prisma = Client()
 
 app = Flask(__name__)
 prisma = Config.PRISMA
