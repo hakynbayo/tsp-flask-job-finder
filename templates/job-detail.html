@@ -78,8 +78,8 @@
                 <div class="row gy-5 gx-4">
                     <div class="col-lg-8">
                         <div class="d-flex align-items-center mb-5">
-                            <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.company.logo }}" alt=""
-                                style="width: 80px; height: 80px;">
+                            <!-- <img class="flex-shrink-0 img-fluid border rounded" src="{{ job.company.logo }}" alt="" -->
+                                <!-- style="width: 80px; height: 80px;"> -->
                             <div class="text-start ps-4">
                                 <h3 class="mb-3">{{ job.title }}</h3>
                                 <span class="text-truncate me-3"><i
@@ -110,7 +110,8 @@
 
                         <div class="">
                             <h4 class="mb-4">Apply For The Job</h4>
-                            <form id="applicationForm">
+                            <form id="applicationForm" action="{{ url_for('job_routes.handle_form_submission') }}"
+                                method="POST">
                                 <div class="row g-3">
                                     <div class="col-12 col-sm-6">
                                         <input type="text" class="form-control" placeholder="Your Name" name="name"
@@ -152,7 +153,7 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        Your application has been sent successfully.
+                                        Your application has been sent successfully. An email has been sent for confirmation
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
@@ -167,20 +168,17 @@
                     <div class="col-lg-4">
                         <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
                             <h4 class="mb-4">Job Summary</h4>
-                            <p><i class="fa fa-angle-right text-primary me-2"></i>Published On: 01 Jan, 2045</p>
-                            <p><i class="fa fa-angle-right text-primary me-2"></i>Vacancy: 123 Position</p>
+                            <p><i class="fa fa-angle-right text-primary me-2"></i>Published On: 01 Jan, 2024</p>
+                            <p><i class="fa fa-angle-right text-primary me-2"></i>Vacancy: {{ job.title }} </p>
                             <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: Full Time</p>
-                            <p><i class="fa fa-angle-right text-primary me-2"></i>Salary: $123 - $456</p>
+                            <p><i class="fa fa-angle-right text-primary me-2"></i>Salary: {{ job.salaryRange }}</p>
                             <p><i class="fa fa-angle-right text-primary me-2"></i>Location: New York, USA</p>
-                            <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i>Date Line: 01 Jan, 2045
-                            </p>
+                            <!-- <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i>Date Line: 01 Jan, 2045
+                            </p> -->
                         </div>
                         <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
                             <h4 class="mb-4">Company Detail</h4>
-                            <p class="m-0">Ipsum dolor ipsum accusam stet et et diam dolores, sed rebum sadipscing elitr
-                                vero dolores. Lorem dolore elitr justo et no gubergren sadipscing, ipsum et takimata
-                                aliquyam et rebum est ipsum lorem diam. Et lorem magna eirmod est et et sanctus et, kasd
-                                clita labore.</p>
+                            <p class="m-0">Our company is a leading technology firm dedicated to creating innovative solutions that empower businesses. We foster a collaborative and inclusive work environment, encouraging continuous learning and professional growth.</p>
                         </div>
                     </div>
                 </div>
@@ -286,6 +284,55 @@
 
                 // Show the modal
                 new bootstrap.Modal(document.getElementById('applicationModal')).show();
+            });
+
+            // Add a click event listener to the close button of the modal
+            document.getElementById("closeModalBtn").addEventListener('click', function () {
+                // Clear the form
+                applicationForm.reset();
+            });
+        });
+    </script> 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Reference to the form
+            const applicationForm = document.getElementById("applicationForm");
+
+            // Add a submit event listener to the form
+            applicationForm.addEventListener('submit', function (event) {
+                // Prevent the default form submission
+                event.preventDefault();
+
+                // Serialize form data
+                const formData = new FormData(applicationForm);
+
+                // Log form data for debugging
+                console.log('Form Data:', formData);
+
+                // Make an AJAX request to your server
+                fetch("/app/form-submission", {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Handle the response from the server (if needed)
+                        console.log(data);
+
+                        // Show the modal
+                        const applicationModal = new bootstrap.Modal(document.getElementById('applicationModal'));
+                        applicationModal.show();
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                        // Handle the error (e.g., display an error message)
+                    });
             });
 
             // Add a click event listener to the close button of the modal

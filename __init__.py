@@ -1,6 +1,7 @@
-from job_routs import job_routes
+from job_routes import job_routes
 from prisma import Client
 from flask import Flask, render_template
+from flask_mail import Mail
 from app.config import Config  # Updated import path
 import sys
 from pathlib import Path
@@ -15,6 +16,12 @@ prisma = Config.PRISMA
 
 # # Connect the Prisma client
 # prisma.connect()
+# Configure Flask app with email settings
+app.config.from_object(Config)
+
+# Initialize Flask-Mail
+mail = Mail(app)
+
 # Check if the Prisma client is not already connected before connecting
 if not prisma.is_connected():
     # Connect the Prisma client
@@ -22,6 +29,9 @@ if not prisma.is_connected():
 
 # Register the job_routes blueprint
 app.register_blueprint(job_routes)
+
+# Make the app instance global
+global_app = app
 
 
 @app.route("/")
@@ -64,6 +74,11 @@ def jobdetail():
 @app.route('/job-apply')
 def jobapply():
     return render_template('job-apply.html')
+
+
+@app.route('/error')
+def error():
+    return render_template('404.html')
 
 
 @app.route('/login')
